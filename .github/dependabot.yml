@@ -3,8 +3,7 @@ updates:
   - package-ecosystem: "gitsubmodule"
     directory: "/"
     schedule:
-      interval: "daily"
-      time: "09:00"
+      interval: "monthly"
       timezone: "Asia/Manila"
 
   - package-ecosystem: "github-actions"
