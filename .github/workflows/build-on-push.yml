@@ -15,7 +15,6 @@ jobs:
         with:
           keep_latest: 1
           delete_tag_pattern: a
-          delete_tags: true
           
       - name: Checkout
         uses: actions/checkout@v2
