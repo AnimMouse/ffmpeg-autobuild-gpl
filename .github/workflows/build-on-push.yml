@@ -14,8 +14,8 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           keep_latest: 1
-          delete_tags: true
           delete_tag_pattern: a
+          delete_tags: true
           
       - name: Checkout
         uses: actions/checkout@v2
