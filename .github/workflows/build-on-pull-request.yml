@@ -86,11 +86,10 @@ jobs:
           
       - name: Release
         uses: softprops/action-gh-release@v1
-        name: Auto ${{ steps.date-time.outputs.date-time }}
-        tag_name: a-${{ steps.date-time.outputs.date }}
-        prerelease: true
-        body: FFmpeg GPL git-${{ needs.build.outputs.git-sha }} in ${{ needs.build.outputs.git-date }} built on ${{ steps.date-time.outputs.date-time }}
         with:
+          name: ${{ steps.date-time.outputs.date-time }}
+          tag_name: ${{ steps.date-time.outputs.date }}
+          body: FFmpeg GPL git-${{ needs.build.outputs.git-sha }} in ${{ needs.build.outputs.git-date }} built on ${{ steps.date-time.outputs.date-time }}
           files: ffmpeg-win64-gpl/ffmpeg-${{ needs.build.outputs.git-sha }}-win64-gpl.7z
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
