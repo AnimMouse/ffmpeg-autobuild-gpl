@@ -11,6 +11,8 @@ ffmpeg, ffprobe, and ffplay are included.
 
 All builds are static.
 
+This repository is also used for testing new features for building before using it on [ffmpeg-autobuild](https://github.com/AnimMouse/ffmpeg-autobuild).
+
 Powered by [ffmpeg-windows-build-helpers](https://github.com/rdp/ffmpeg-windows-build-helpers) script to cross compile for Windows on Linux.
 
 Uses [GitHub Actions](https://github.com/features/actions) to automatically compile FFmpeg.
