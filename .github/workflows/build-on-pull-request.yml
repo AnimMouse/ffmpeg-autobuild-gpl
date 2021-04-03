@@ -2,7 +2,7 @@ name: Build FFmpeg on pull request
 on:
   pull_request:
     branches:
-      - master
+      - main
       
 jobs:
   build:
@@ -57,6 +57,17 @@ jobs:
           name: x265-win64-all-bitdepth
           path: sandbox/win64/x265_all_bitdepth/8bit/x265.exe
           
+      - name: Get current FFmpeg git commit SHA
+        id: git-sha-date
+        working-directory: ffmpeg-source
+        run: |
+          echo "::set-output name=git-sha::$(git rev-parse --short HEAD)"
+          echo "::set-output name=git-date::$(git log -1 --format=%ci)"
+          
+    outputs:
+      git-sha: ${{ steps.git-sha-date.outputs.git-sha }}
+      git-date: ${{ steps.git-sha-date.outputs.git-date }}
+      
   release:
     needs: build
     runs-on: ubuntu-20.04
@@ -64,63 +75,22 @@ jobs:
       - name: Download all builds
         uses: actions/download-artifact@v2
         
-      - name: Create Release
-        id: create-release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: "a#${{ github.run_number }}"
-          release_name: "Auto #${{ github.run_number }}"
-          draft: false
-          prerelease: true
+      - name: Rename archive to include git commit SHA
+        run: mv ffmpeg-win64-gpl.7z ffmpeg-${{needs.build.outputs.git-sha}}-win64-gpl.7z
+        
+      - name: Get current date & time
+        id: date-time
+        run: |
+          echo "::set-output name=date-time::$(date +'%Y-%m-%d %H:%M %p')"
+          echo "::set-output name=date::$(date +'%Y-%m-%d')"
           
-      - name: Upload FFmpeg win64 GPL Release Asset
-        uses: actions/upload-release-asset@v1
+      - name: Release
+        uses: softprops/action-gh-release@v1
+        name: Auto ${{ steps.date-time.outputs.date-time }}
+        tag_name: a-${{ steps.date-time.outputs.date }}
+        prerelease: true
+        body: FFmpeg GPL git-${{ needs.build.outputs.git-sha }} in ${{ needs.build.outputs.git-date }} built on ${{ steps.date-time.outputs.date-time }}
+        with:
+          files: ffmpeg-win64-gpl/ffmpeg-${{ needs.build.outputs.git-sha }}-win64-gpl.7z
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: ffmpeg-win64-gpl/ffmpeg-win64-gpl.7z
-          asset_name: ffmpeg-win64-gpl.7z
-          asset_content_type: application/x-7z-compressed
-          
-      - name: Upload x264 win64 Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: x264-win64/x264.exe
-          asset_name: x264-win64.exe
-          asset_content_type: application/vnd.microsoft.portable-executable
-          
-      - name: Upload x264 win64 all bitdepth Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: x264-win64-all-bitdepth/x264.exe
-          asset_name: x264-win64-all-bitdepth.exe
-          asset_content_type: application/vnd.microsoft.portable-executable
-          
-      - name: Upload x265 win64 Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: x265-win64/x265.exe
-          asset_name: x265-win64.exe
-          asset_content_type: application/vnd.microsoft.portable-executable
-          
-      - name: Upload x265 win64 all bitdepth Release Asset
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ steps.create-release.outputs.upload_url }}
-          asset_path: x265-win64-all-bitdepth/x265.exe
-          asset_name: x265-win64-all-bitdepth.exe
-          asset_content_type: application/vnd.microsoft.portable-executable
