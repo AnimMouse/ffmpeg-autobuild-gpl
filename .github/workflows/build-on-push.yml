@@ -14,7 +14,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-          fetch-depth: 1
           
       - name: Install dependencies
         run: ./dependencies.sh
@@ -131,7 +130,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          name: ${{ needs.build.outputs.date-time-after }}
+          name: ${{ needs.build.outputs.date-time-after }} ${{ needs.build.outputs.git-sha }}
           tag_name: m-${{ needs.build.outputs.date-time-after-tag }}
           body: |
             FFmpeg GPL git-${{ needs.build.outputs.git-sha }} in ${{ needs.build.outputs.git-date }} built on ${{ needs.build.outputs.date-time-after }} started at ${{ needs.build.outputs.date-time-before }}
@@ -140,10 +139,10 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           
-  delete-old:
+  delete_old:
     runs-on: ubuntu-20.04
     steps:
-      - name: Delete Older Pre-release
+      - name: Delete older pre-releases
         uses: dev-drprasad/delete-older-releases@v0.2.0
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

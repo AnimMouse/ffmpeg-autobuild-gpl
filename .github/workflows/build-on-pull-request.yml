@@ -14,7 +14,6 @@ jobs:
         uses: actions/checkout@v2
         with:
           submodules: true
-          fetch-depth: 1
           
       - name: Install dependencies
         run: ./dependencies.sh
@@ -131,7 +130,7 @@ jobs:
       - name: Release
         uses: softprops/action-gh-release@v1
         with:
-          name: Auto ${{ needs.build.outputs.date-time-after }}
+          name: Auto ${{ needs.build.outputs.date-time-after }} ${{ needs.build.outputs.git-sha }}
           tag_name: a-${{ needs.build.outputs.date-time-after-tag }}
           prerelease: true
           body: |
