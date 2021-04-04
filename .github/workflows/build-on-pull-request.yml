@@ -26,6 +26,11 @@ jobs:
           echo "::set-output name=git-sha::$(git rev-parse --short HEAD)"
           echo "::set-output name=git-date::$(git log -1 --format=%ci)"
           
+      - name: Get current ffmpeg-windows-build-helpers git commit SHA
+        id: helper-git-sha
+        working-directory: ffmpeg-windows-build-helpers
+        run: echo "::set-output name=git-sha::$(git rev-parse --short HEAD)"
+        
       - name: Move ffmpeg-windows-build-helpers
         run: mv -v ./ffmpeg-windows-build-helpers/* ./
         
@@ -90,6 +95,7 @@ jobs:
       date-time-after-tag: ${{ steps.date-time-after.outputs.date-time-tag }}
       git-sha: ${{ steps.git-sha-date.outputs.git-sha }}
       git-date: ${{ steps.git-sha-date.outputs.git-date }}
+      helper-git-sha: ${{ steps.helper-git-sha.outputs.git-sha }}
       
   archive:
     needs: build
@@ -128,7 +134,9 @@ jobs:
           name: Auto ${{ needs.build.outputs.date-time-after }}
           tag_name: a-${{ needs.build.outputs.date-time-after-tag }}
           prerelease: true
-          body: FFmpeg GPL git-${{ needs.build.outputs.git-sha }} in ${{ needs.build.outputs.git-date }} built on ${{ needs.build.outputs.date-time-after }} at ${{ needs.build.outputs.date-time-before }}
+          body: |
+            FFmpeg GPL git-${{ needs.build.outputs.git-sha }} in ${{ needs.build.outputs.git-date }} built on ${{ needs.build.outputs.date-time-after }} started at ${{ needs.build.outputs.date-time-before }}
+            Using ffmpeg-windows-build-helpers git-${{ needs.build.outputs.helper-git-sha }}
           files: ffmpeg-${{ needs.build.outputs.git-sha }}-win64-gpl.7z
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
