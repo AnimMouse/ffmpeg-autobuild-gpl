@@ -114,7 +114,7 @@ jobs:
           path: ffmpeg-${{ needs.build.outputs.git-sha }}-win64-gpl.7z
           
   release:
-    needs: archive
+    needs: [build, archive]
     runs-on: ubuntu-20.04
     steps:
       - name: Download FFmpeg archive
@@ -126,7 +126,7 @@ jobs:
         uses: softprops/action-gh-release@v1
         with:
           name: ${{ needs.build.outputs.date-time-after }}
-          tag_name: ${{ needs.build.outputs.date-time-after-tag }}
+          tag_name: m-${{ needs.build.outputs.date-time-after-tag }}
           body: FFmpeg GPL git-${{ needs.build.outputs.git-sha }} in ${{ needs.build.outputs.git-date }} built on ${{ needs.build.outputs.date-time-after }} at ${{ needs.build.outputs.date-time-before }}
           files: ffmpeg-${{ needs.build.outputs.git-sha }}-win64-gpl.7z
         env:

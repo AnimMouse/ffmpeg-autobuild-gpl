@@ -114,7 +114,7 @@ jobs:
           path: ffmpeg-${{ needs.build.outputs.git-sha }}-win64-gpl.7z
           
   release:
-    needs: archive
+    needs: [build, archive]
     runs-on: ubuntu-20.04
     steps:
       - name: Download FFmpeg archive
