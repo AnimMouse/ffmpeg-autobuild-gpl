@@ -99,8 +99,8 @@ jobs:
       - name: Upload FFmpeg archive ${{matrix.os}} GPL
         uses: actions/upload-artifact@v2
         with:
-          name: ffmpeg-archive-${{ needs.build.outputs.git-sha }}-${{matrix.os}}-gpl
-          path: ffmpeg-${{ needs.build.outputs.git-sha }}-${{matrix.os}}-gpl.7z
+          name: ffmpeg-archive-${{ needs.build.outputs.git-sha }}-${{ matrix.os }}-gpl
+          path: ffmpeg-${{ needs.build.outputs.git-sha }}-${{ matrix.os }}-gpl.7z
           
   release:
     needs: [build, archive]
