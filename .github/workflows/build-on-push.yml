@@ -87,14 +87,20 @@ jobs:
         os: [win64, win32]
         
     steps:
-      - name: Download all builds
+      - name: Download FFmpeg ${{ matrix.os }} GPL
         uses: actions/download-artifact@v2
-        
-      - name: Move FFmpeg builds
-        run: |
-          mv -v ./ffmpeg-${{needs.build.outputs.git-sha}}-${{matrix.os}}-gpl/ffmpeg.exe ./
-          mv -v ./ffprobe-${{needs.build.outputs.git-sha}}-${{matrix.os}}-gpl/ffprobe.exe ./
-          mv -v ./ffplay-${{needs.build.outputs.git-sha}}-${{matrix.os}}-gpl/ffplay.exe ./
+        with:
+          name: ffmpeg-${{ needs.build.outputs.git-sha }}-${{ matrix.os }}-gpl
+          
+      - name: Download FFprobe ${{ matrix.os }} GPL
+        uses: actions/download-artifact@v2
+        with:
+          name: ffprobe-${{ needs.build.outputs.git-sha }}-${{ matrix.os }}-gpl
+          
+      - name: Download FFplay ${{ matrix.os }} GPL
+        uses: actions/download-artifact@v2
+        with:
+          name: ffplay-${{ needs.build.outputs.git-sha }}-${{ matrix.os }}-gpl
           
       - name: 7-Zip FFmpeg ${{ matrix.os }} GPL
         run: 7z a ffmpeg-${{needs.build.outputs.git-sha}}-${{matrix.os}}-gpl.7z ffmpeg.exe ffprobe.exe ffplay.exe -mx9
@@ -109,12 +115,12 @@ jobs:
     needs: [build, archive]
     runs-on: ubuntu-20.04
     steps:
-      - name: Download FFmpeg archive win64
+      - name: Download FFmpeg archive win64 GPL
         uses: actions/download-artifact@v2
         with:
           name: ffmpeg-archive-${{ needs.build.outputs.git-sha }}-win64-gpl
           
-      - name: Download FFmpeg archive win32
+      - name: Download FFmpeg archive win32 GPL
         uses: actions/download-artifact@v2
         with:
           name: ffmpeg-archive-${{ needs.build.outputs.git-sha }}-win32-gpl
