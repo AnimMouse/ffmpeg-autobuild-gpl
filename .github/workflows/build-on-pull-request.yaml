@@ -2,6 +2,7 @@ name: Build FFmpeg on pull request
 on:
   pull_request_target:
     paths:
+      - ffmpeg-source
       - ffmpeg-windows-build-helpers/**
       - dependencies.sh
       - .github/workflows/build-on-push.yaml

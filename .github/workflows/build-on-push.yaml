@@ -2,6 +2,7 @@ name: Build FFmpeg on push
 on:
   push:
     paths:
+      - ffmpeg-source
       - ffmpeg-windows-build-helpers/**
       - dependencies.sh
       - .github/workflows/build-on-push.yaml
