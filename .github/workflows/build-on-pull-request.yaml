@@ -1,15 +1,15 @@
 name: Build FFmpeg on pull request
 on:
   pull_request_target:
-    branches:
-      - main
-    paths-ignore:
-      - README.md
-      - .github/dependabot.yml
+    paths:
+      - ffmpeg-windows-build-helpers/**
+      - dependencies.sh
+      - .github/workflows/build-on-push.yaml
+      - .github/workflows/build-on-pull-request.yaml
       
 jobs:
   build:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-latest
     if: github.actor == 'dependabot[bot]' || github.actor == 'AnimMouse'
     strategy:
       matrix:
