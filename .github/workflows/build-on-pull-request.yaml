@@ -17,7 +17,7 @@ jobs:
         os: [win64, win32]
         
     steps:
-      - name: Checkout
+      - name: Checkout repository
         uses: actions/checkout@v2
         with:
           submodules: true
