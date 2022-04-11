@@ -91,17 +91,17 @@ jobs:
         
     steps:
       - name: Download FFmpeg ${{ matrix.os }} GPL
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: ffmpeg-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-${{ matrix.os }}-gpl
           
       - name: Download FFprobe ${{ matrix.os }} GPL
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: ffprobe-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-${{ matrix.os }}-gpl
           
       - name: Download FFplay ${{ matrix.os }} GPL
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: ffplay-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-${{ matrix.os }}-gpl
           
@@ -119,12 +119,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Download FFmpeg archive win64 GPL
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: ffmpeg-archive-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-win64-gpl
           
       - name: Download FFmpeg archive win32 GPL
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: ffmpeg-archive-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-win32-gpl
           
