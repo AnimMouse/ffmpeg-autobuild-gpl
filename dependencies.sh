@@ -1,5 +1,5 @@
 #!/bin/sh
-sudo apt-get update
-sudo apt-get upgrade
-sudo apt-get install ragel cvs yasm pax nasm gperf autogen autoconf-archive
-sudo -H pip3 install meson ninja
+sudo apt-get -qq -y update
+sudo apt-get -qq -y upgrade
+sudo apt-get -qq -y install ragel cvs yasm pax nasm gperf autogen autoconf-archive
+sudo -H pip3 -qq install meson ninja

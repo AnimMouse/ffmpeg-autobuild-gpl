@@ -127,17 +127,16 @@ jobs:
           name: ffmpeg-archive-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-win32-gpl
           
       - name: Release
-        uses: softprops/action-gh-release@v1
-        with:
-          name: ${{ needs.build.outputs.date-time-after }} ${{ needs.build.outputs.git-sha }}
-          tag_name: m-${{ needs.build.outputs.date-time-after-tag }}
-          body: |
-            FFmpeg GPL git-${{ needs.build.outputs.git-sha }} in ${{ needs.build.outputs.git-date }} built on ${{ needs.build.outputs.date-time-after }} started at ${{ needs.build.outputs.date-time-before }}
-            Using ffmpeg-windows-build-helpers git-${{ needs.build.outputs.helper-git-sha }}
-          files: |
-            ffmpeg-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-win64-gpl.7z
-            ffmpeg-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-win32-gpl.7z
-            
+        run: >
+          gh release create "m-${{ needs.build.outputs.date-time-after-tag }}"
+          "ffmpeg-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-win64-gpl.7z"
+          "ffmpeg-${{ needs.build.outputs.git-sha }}-${{ needs.build.outputs.helper-git-sha }}-win32-gpl.7z"
+          -n "FFmpeg GPL git-${{ needs.build.outputs.git-sha }} in ${{ needs.build.outputs.git-date }} built on ${{ needs.build.outputs.date-time-after }} started at ${{ needs.build.outputs.date-time-before }}\nUsing ffmpeg-windows-build-helpers git-${{ needs.build.outputs.helper-git-sha }}"
+          -t "${{ needs.build.outputs.date-time-after }} ${{ needs.build.outputs.git-sha }}"
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          
   delete_old:
     name: Delete older pre-releases
     runs-on: ubuntu-latest
